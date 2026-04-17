@@ -39,7 +39,7 @@ def pedir_año():
 def existe_pelicula(nombre, peliculas):
     i = 0
     while i < len(peliculas):
-        if re.fullmatch(nombre, peliculas[i], flags=re.IGNORECASE): # ignora las mayusculas
+        if peliculas[i] == nombre:
             return True
         i += 1
     return False
@@ -112,7 +112,7 @@ def ordenar_por_puntaje(peliculas, generos, puntajes, años):
 def buscar_pelicula(peliculas, generos, puntajes, años):
     nombre = input("Ingrese el nombre de la película: ")
     for i in range(len(peliculas)):
-        if re.fullmatch(nombre, peliculas[i], flags=re.IGNORECASE):
+        if peliculas[i] == nombre:
             print("Película encontrada:")
             print("Película:", peliculas[i])
             print("Género:", generos[i])
@@ -192,7 +192,17 @@ def validacionFecha(anio_estreno ):
     if re.match(r"^\d{4}$",anio_estreno):
         return True
     else:
-        return False #FALTA IMPLEMENTAR 
+        return False #FALTA IMPLEMENTAR
+    
+    
+def pedir_mail():
+    patron = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    mail = input("Ingrese su mail: ")
+    while not re.match(patron, mail):
+        print("Formato de mail inválido (ejemplo: usuario@dominio.com).")
+        mail = input("Ingrese su mail: ")
+    return mail
+
 
 # ---------------- MAIN ----------------
 def main():
@@ -233,5 +243,13 @@ def main():
         elif opcion == "0":
             print("Fin del programa.")
             band=False
+            
+            print("Desea ingresar su mail para que le mandemos notificaciones?")
+            opcion_mail=input("1=Si   2=No: ")
+            if opcion_mail=="1":
+                pedir_mail()
+                print("Mail valido se le mandaran las notificaciones ")
+            else:
+                print ("Gracias por usar CineFind")
 
 main()
