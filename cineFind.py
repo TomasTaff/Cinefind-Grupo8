@@ -27,14 +27,13 @@ def pedir_puntaje():
     return puntaje
 
 def pedir_año():
-    año = int(input("Año de estreno: "))
-    if validacionFecha(año ):
-
-        while año < 1888 or año > 2025:
-            print("Año fuera de rango.")
-            año = int(input("Año de estreno: "))
-    else:
-        return año
+    año_str = input("Año de estreno: ")
+    while not re.fullmatch(r"^\d{4}$", año_str) or int(año_str) < 1888 or int(año_str) > 2025:
+        print("Año inválido o fuera de rango. Ingrese 4 números (ej. 2001).")
+        año_str = input("Año de estreno: ")
+        
+    año = int(año_str) 
+    return año
 
 # ---------------- FUNCIONES PRINCIPALES ----------------
 def existe_pelicula(nombre, peliculas):
