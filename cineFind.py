@@ -222,7 +222,7 @@ def main():
             copia_puntajes=copiar_lista( puntajes)
             copia_años=copiar_lista(años)
             ordenar_por_puntaje(copia_peliculas, copia_generos,copia_puntajes, copia_años)
-            mostrar_peliculas(copia_peliculas, copia_generos,copia_puntajes, copia_años)
+            
         elif opcion == "6":
             buscar_pelicula(peliculas, generos, puntajes, años)
         elif opcion == "7":
