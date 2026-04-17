@@ -29,7 +29,7 @@ def pedir_puntaje():
  
 def pedir_año():
     año = int(input("Año de estreno: "))
-    while año < 1888 or año > 2025:
+    while año < 1888 or año > 2026:
         print("Año fuera de rango.")
         año = int(input("Año de estreno: "))
     return año
