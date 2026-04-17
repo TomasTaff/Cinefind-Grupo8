@@ -39,7 +39,7 @@ def pedir_año():
 def existe_pelicula(nombre, peliculas):
     i = 0
     while i < len(peliculas):
-        if peliculas[i] == nombre:
+        if re.fullmatch(nombre, peliculas[i], flags=re.IGNORECASE): # ignora las mayusculas
             return True
         i += 1
     return False
@@ -112,7 +112,7 @@ def ordenar_por_puntaje(peliculas, generos, puntajes, años):
 def buscar_pelicula(peliculas, generos, puntajes, años):
     nombre = input("Ingrese el nombre de la película: ")
     for i in range(len(peliculas)):
-        if peliculas[i] == nombre:
+        if re.fullmatch(nombre, peliculas[i], flags=re.IGNORECASE):
             print("Película encontrada:")
             print("Película:", peliculas[i])
             print("Género:", generos[i])
