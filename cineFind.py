@@ -17,10 +17,13 @@ def pedir_genero():
     return genero
 
 def pedir_puntaje():
-    puntaje = float(input("Puntaje (0 a 10): "))
-    while puntaje < 0 or puntaje > 10:
+    puntaje_str = input("Puntaje (0 a 10): ")
+    
+    while not re.fullmatch(r"^\d{1,2}$", puntaje_str) or float(puntaje_str) < 0 or float(puntaje_str) > 10:
         print("Puntaje inválido.")
-        puntaje = float(input("Puntaje (0 a 10): "))
+        puntaje_str = input("Puntaje (0 a 10): ")
+        
+    puntaje = float(puntaje_str)
     return puntaje
 
 def pedir_año():
