@@ -39,7 +39,7 @@ def pedir_año():
 def existe_pelicula(nombre, peliculas):
     i = 0
     while i < len(peliculas):
-        if peliculas[i] == nombre:
+        if re.fullmatch(nombre, peliculas[i], flags=re.IGNORECASE):
             return True
         i += 1
     return False
@@ -112,7 +112,7 @@ def ordenar_por_puntaje(peliculas, generos, puntajes, años):
 def buscar_pelicula(peliculas, generos, puntajes, años):
     nombre = input("Ingrese el nombre de la película: ")
     for i in range(len(peliculas)):
-        if peliculas[i] == nombre:
+        if re.fullmatch(nombre, peliculas[i], flags=re.IGNORECASE):
             print("Película encontrada:")
             print("Película:", peliculas[i])
             print("Género:", generos[i])
@@ -171,6 +171,19 @@ def mostrar_pelucula_en_matriz(filas, columnas,peliculas,generos,puntajes,años)
         matriz.append(fila)
     return matriz
 
+def mostrar_destacadas(peliculas, puntajes):
+    print("\n=== PELÍCULAS DESTACADAS ===")
+    # arma una lista con todas las posiciones de las peliculas.  
+    posiciones = list(range(len(puntajes)))
+    
+    pos_destacadas = list(filter(lambda i: puntajes[i] > 8, posiciones))
+    #pos_destacadas filtra las peliculas segun su numero de pos. con puntajes mayores a 8.
+    if len(pos_destacadas) == 0:
+        print("No hay películas destacadas aún.")
+    else:
+        for i in pos_destacadas:
+            print(f"- {peliculas[i]}: {puntajes[i]} estrellas")
+    print()
 # ---------------- MENU ----------------
 def menu():
     print("=== MENÚ CINEFIND ===")
@@ -181,18 +194,14 @@ def menu():
     print("5. Ordenar por puntaje")
     print("6. Buscar película")
     print("7. Ver estadísticas")
+    print("8. Ver peliculas destacadas")
     print("0. Salir")
     opcion = input("Opción: ")
-    while opcion not in ["0","1","2","3","4","5","6","7"]:
+    while opcion not in ["0","1","2","3","4","5","6","7","8"]:
         print("Opción inválida.")
         opcion = input("Opción: ")
     return opcion
- 
-def validacionFecha(anio_estreno ):
-    if re.match(r"^\d{4}$",anio_estreno):
-        return True
-    else:
-        return False #FALTA IMPLEMENTAR
+
     
     
 def pedir_mail():
@@ -239,6 +248,8 @@ def main():
             buscar_pelicula(peliculas, generos, puntajes, años)
         elif opcion == "7":
             estadisticas(puntajes)
+        elif opcion == "8":
+            mostrar_destacadas(peliculas, puntajes)
 
         elif opcion == "0":
             print("Fin del programa.")
