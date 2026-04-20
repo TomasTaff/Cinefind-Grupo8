@@ -2,8 +2,9 @@
  
 import re
 from functools import reduce
+
 def pedir_nombre():
- """Solicita y valida que el nombre de la película no sea un string vacío."""
+    """Solicita el nombre de la pelicula y valida que no sea un campo vacio."""
     nombre = input("Nombre de la película: ")
     while nombre == "":
         print("El nombre no puede estar vacío.")
@@ -11,7 +12,7 @@ def pedir_nombre():
     return nombre
 
 def pedir_genero():
- """Solicita el genero de la pelicula y valida que no sea un campo vacio."""
+    """Solicita el genero de la pelicula y valida que no sea un campo vacio."""
     genero = input("Género: ")
     while genero == "":
         print("El género no puede estar vacío.")
@@ -19,7 +20,7 @@ def pedir_genero():
     return genero
 
 def pedir_puntaje():
- """
+    """
     Solicita un puntaje (0-10). Usa re.fullmatch para asegurar que sean numeros 
     y verifica que el valor este en el rango permitido.
     """
@@ -33,7 +34,7 @@ def pedir_puntaje():
     return puntaje
 
 def pedir_año():
- """
+    """
     Solicita el anio de estreno. Valida que sea un numero de 4 digitos 
     entre 1888 y 2025 mediante expresiones regulares y comparaciones logicas.
     """
@@ -47,7 +48,7 @@ def pedir_año():
 
 # ---------------- FUNCIONES PRINCIPALES ----------------
 def existe_pelicula(nombre, peliculas):
- """
+    """
     Recorre la lista de titulos para verificar si el nombre ingresado ya existe.
     Usa re.IGNORECASE para evitar duplicados por diferencias de mayusculas.
     """
@@ -59,7 +60,7 @@ def existe_pelicula(nombre, peliculas):
     return False
 
 def agregar_pelicula(peliculas, generos, puntajes, años):
- """
+    """
     Coordina la carga de una nueva pelicula. Verifica existencia previa y 
     actualiza las cuatro listas (nombres, generos, puntajes, anios).
     """
@@ -78,7 +79,7 @@ def agregar_pelicula(peliculas, generos, puntajes, años):
 
 
 def actualizar_pelicula(peliculas, generos, puntajes, años):
- """
+    """
     Busca una pelicula por nombre y permite al usuario modificar 
     especificamente su genero o su puntaje.
     """
@@ -108,7 +109,7 @@ def actualizar_pelicula(peliculas, generos, puntajes, años):
         print("Opción inválida.\n")
 
 def promedio_puntajes(puntajes):
- """
+    """
     Calcula el promedio aritmetico de todos los puntajes registrados 
     utilizando la funcion de orden superior 'reduce'.
     """
@@ -120,12 +121,14 @@ def promedio_puntajes(puntajes):
  
     promedio = total / len(puntajes)
     print("Puntaje promedio general:", round(promedio, 2), "\n")
+
 def copiar_lista(lista):
- """Crea y retorna una copia superficial (shallow copy) de la lista ingresada."""
+    """Crea y retorna una copia superficial (shallow copy) de la lista ingresada."""
     copia_lista=lista.copy()
     return copia_lista
+
 def ordenar_por_puntaje(peliculas, generos, puntajes, años):
- """
+    """
     Aplica el algoritmo de Bubble Sort para ordenar las listas de forma descendente 
     basandose en el puntaje, manteniendo la integridad de los datos en paralelo.
     """
@@ -141,7 +144,7 @@ def ordenar_por_puntaje(peliculas, generos, puntajes, años):
     print("Películas ordenadas por puntaje.\n")
 
 def buscar_pelicula(peliculas, generos, puntajes, años):
- """
+    """
     Realiza una busqueda por nombre y, de encontrar coincidencia, 
     imprime toda la ficha tecnica de la pelicula (Genero, Puntaje, Anio).
     """
@@ -157,7 +160,7 @@ def buscar_pelicula(peliculas, generos, puntajes, años):
     print("No se encontró la película.\n")
 
 def estadisticas(puntajes):
- """
+    """
     Muestra un resumen estadistico rapido: puntaje mas alto, 
     mas bajo y el promedio general.
     """
@@ -173,12 +176,11 @@ def estadisticas(puntajes):
 
 # ---------------- MATRIZ ----------------
 def matriz_peliculas(filas, columnas,peliculas):
- """
+    """
     Organiza la lista de nombres de peliculas en una estructura bidimensional 
     (matriz) de dimensiones dadas, rellenando con 'VACIO' si sobran espacios.
     """
  
-
     matriz = []
     indice = 0
     for i in range(filas):
@@ -193,19 +195,18 @@ def matriz_peliculas(filas, columnas,peliculas):
     return matriz
 
 def imprimir_matriz(matriz):
- """Recorre e imprime cualquier matriz en consola con un formato visual de rejilla (|)."""
+    """Recorre e imprime cualquier matriz en consola con un formato visual de rejilla (|)."""
     for i in range(len(matriz)):
         for j in range(len(matriz[i])):
             print(matriz[i][j], end=" | ")
         print()
  
 def mostrar_pelucula_en_matriz(filas, columnas,peliculas,generos,puntajes,años):
- """
+    """
     Genera una matriz donde cada celda contiene una lista con toda la informacion 
     agrupada de cada pelicula (Estructura compleja dentro de matriz).
     """
  
-
     matriz = []
     indice = 0
     for i in range(filas):
@@ -220,7 +221,7 @@ def mostrar_pelucula_en_matriz(filas, columnas,peliculas,generos,puntajes,años)
     return matriz
 
 def mostrar_destacadas(peliculas, puntajes):
- """
+    """
     Filtra y muestra por consola los nombres de las peliculas cuya calificacion 
     es estrictamente superior a 8 puntos usando 'filter'.
     """
@@ -236,9 +237,10 @@ def mostrar_destacadas(peliculas, puntajes):
         for i in pos_destacadas:
             print(f"- {peliculas[i]}: {puntajes[i]} estrellas")
     print()
+
 # ---------------- MENU ----------------
 def menu():
- """Muestra la interfaz de opciones al usuario y valida que la entrada sea una opcion valida."""
+    """Muestra la interfaz de opciones al usuario y valida que la entrada sea una opcion valida."""
     print("=== MENÚ CINEFIND ===")
     print("1. Agregar película")
     print("2. Mostrar películas")
@@ -255,10 +257,8 @@ def menu():
         opcion = input("Opción: ")
     return opcion
 
-    
-    
 def pedir_mail():
- """
+    """
     Valida la entrada de un correo electronico mediante una expresion regular 
     que verifica la estructura estandar (usuario@dominio.com).
     """
