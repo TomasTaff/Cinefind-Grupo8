@@ -3,6 +3,10 @@
 import re
 from functools import reduce
 def pedir_nombre():
+    ''' 
+    Solicita el nombre de la pelicula y valida que no sea un campo vacio
+
+    '''
     nombre = input("Nombre de la película: ")
     while nombre == "":
         print("El nombre no puede estar vacío.")
@@ -10,6 +14,10 @@ def pedir_nombre():
     return nombre
 
 def pedir_genero():
+    '''
+    Solicita el genero de la pelicula y valida que no sea un campo vacio
+
+    '''
     genero = input("Género: ")
     while genero == "":
         print("El género no puede estar vacío.")
@@ -17,6 +25,10 @@ def pedir_genero():
     return genero
 
 def pedir_puntaje():
+    '''
+    Le pide el puntaje al usuario (0-10). Usa re.fullmatch para validar que sean uno o dos digitos y tambien verifica que el valor este en el rango permitido.
+
+    '''
     puntaje_str = input("Puntaje (0 a 10): ")
     
     while not re.fullmatch(r"^\d{1,2}$", puntaje_str) or float(puntaje_str) < 0 or float(puntaje_str) > 10:
@@ -27,6 +39,10 @@ def pedir_puntaje():
     return puntaje
 
 def pedir_año():
+    '''
+    Usuario ingresa el año de estreno de la pelicula. Con re.fullmatch valida que sean 4 digitos. Tambien se valida que sea entre 1888 y 2025 mediante expresiones regulares y comparaciones logicas.
+
+    '''
     año_str = input("Año de estreno: ")
     while not re.fullmatch(r"^\d{4}$", año_str) or int(año_str) < 1888 or int(año_str) > 2025:
         print("Año inválido o fuera de rango. Ingrese 4 números (ej. 2001).")
@@ -37,6 +53,11 @@ def pedir_año():
 
 # ---------------- FUNCIONES PRINCIPALES ----------------
 def existe_pelicula(nombre, peliculas):
+    '''
+    Recorre la lista de titulos para verificar si el nombre ingresado ya existe. Usa re.fullmatch() para la verificacion.
+    Usa re.IGNORECASE para evitar duplicados por diferencias de mayusculas. 
+
+    '''
     i = 0
     while i < len(peliculas):
         if re.fullmatch(nombre, peliculas[i], flags=re.IGNORECASE):
@@ -45,6 +66,10 @@ def existe_pelicula(nombre, peliculas):
     return False
 
 def agregar_pelicula(peliculas, generos, puntajes, años):
+    '''
+    Coordina la carga de una nueva pelicula. 
+    Verifica existencia previa y actualiza las cuatro listas (nombres, generos, puntajes,años)
+    '''
     nombre = pedir_nombre()
     if existe_pelicula(nombre, peliculas):
         print("Esa película ya fue cargada.\n")
@@ -60,6 +85,10 @@ def agregar_pelicula(peliculas, generos, puntajes, años):
 
 
 def actualizar_pelicula(peliculas, generos, puntajes, años):
+    '''
+    Busca una pelicula por nombre y permite al usuario modificar especificamente su genero o puntaje. 
+
+    '''
     if len(peliculas) == 0:
         print("No hay películas para actualizar.\n")
         return
@@ -86,6 +115,10 @@ def actualizar_pelicula(peliculas, generos, puntajes, años):
         print("Opción inválida.\n")
 
 def promedio_puntajes(puntajes):
+    '''
+    Calcula el promedio aritmetico de todos los puntajes registrados 
+    utilizando la funcion de orden superior 'reduce'.
+    '''
     if len(puntajes) == 0:
         print("No hay películas cargadas.\n")
         return
@@ -94,10 +127,18 @@ def promedio_puntajes(puntajes):
  
     promedio = total / len(puntajes)
     print("Puntaje promedio general:", round(promedio, 2), "\n")
+
 def copiar_lista(lista):
+    """
+    Crea y retorna una copia superficial (shallow copy) de la lista ingresada.
+    """
     copia_lista=lista.copy()
     return copia_lista
 def ordenar_por_puntaje(peliculas, generos, puntajes, años):
+    '''
+    Aplica el algoritmo de Bubble Sort para ordenar las listas de forma descendente 
+    basandose en el puntaje, manteniendo la integridad de los datos en paralelo.
+    '''
     n = len(puntajes)
     for i in range(n - 1):
         for j in range(n - i - 1):
@@ -110,6 +151,10 @@ def ordenar_por_puntaje(peliculas, generos, puntajes, años):
     print("Películas ordenadas por puntaje.\n")
 
 def buscar_pelicula(peliculas, generos, puntajes, años):
+    '''
+    Realiza una busqueda por nombre y, de encontrar coincidencia, 
+    imprime toda la ficha tecnica de la pelicula (Genero, Puntaje, Anio).
+    '''
     nombre = input("Ingrese el nombre de la película: ")
     for i in range(len(peliculas)):
         if re.fullmatch(nombre, peliculas[i], flags=re.IGNORECASE):
@@ -122,6 +167,10 @@ def buscar_pelicula(peliculas, generos, puntajes, años):
     print("No se encontró la película.\n")
 
 def estadisticas(puntajes):
+    '''
+    Muestra un resumen estadistico rapido: puntaje mas alto, 
+    mas bajo y el promedio general.
+    '''
     if len(puntajes) == 0:
         print("No hay películas cargadas.\n")
         return
@@ -134,7 +183,10 @@ def estadisticas(puntajes):
 
 # ---------------- MATRIZ ----------------
 def matriz_peliculas(filas, columnas,peliculas):
- 
+    '''
+    Organiza la lista de nombres de peliculas en una estructura bidimensional 
+    (matriz) de dimensiones dadas, rellenando con 'VACIO' si sobran espacios.
+    '''
 
     matriz = []
     indice = 0
@@ -150,14 +202,19 @@ def matriz_peliculas(filas, columnas,peliculas):
     return matriz
 
 def imprimir_matriz(matriz):
+    '''
+    Recorre e imprime cualquier matriz en consola con un formato visual de rejilla (|)
+    '''
     for i in range(len(matriz)):
         for j in range(len(matriz[i])):
             print(matriz[i][j], end=" | ")
         print()
  
 def mostrar_pelucula_en_matriz(filas, columnas,peliculas,generos,puntajes,años):
- 
-
+    '''
+    Genera una matriz donde cada celda contiene una lista con toda la informacion 
+    agrupada de cada pelicula (Estructura compleja dentro de matriz).
+    '''
     matriz = []
     indice = 0
     for i in range(filas):
@@ -172,12 +229,16 @@ def mostrar_pelucula_en_matriz(filas, columnas,peliculas,generos,puntajes,años)
     return matriz
 
 def mostrar_destacadas(peliculas, puntajes):
+    '''
+    Filtra y muestra por consola los nombres de las peliculas cuya calificacion 
+    es estrictamente superior a 8 puntos usando 'filter'.
+    '''
     print("\n=== PELÍCULAS DESTACADAS ===")
-    # arma una lista con todas las posiciones de las peliculas.  
+ 
     posiciones = list(range(len(puntajes)))
     
     pos_destacadas = list(filter(lambda i: puntajes[i] > 8, posiciones))
-    #pos_destacadas filtra las peliculas segun su numero de pos. con puntajes mayores a 8.
+
     if len(pos_destacadas) == 0:
         print("No hay películas destacadas aún.")
     else:
@@ -186,6 +247,10 @@ def mostrar_destacadas(peliculas, puntajes):
     print()
 # ---------------- MENU ----------------
 def menu():
+    '''
+    Muestra la intefaz de opciones al usuario y valida que la entrada sea una opcion valida. 
+
+    '''
     print("=== MENÚ CINEFIND ===")
     print("1. Agregar película")
     print("2. Mostrar películas")
@@ -205,6 +270,10 @@ def menu():
     
     
 def pedir_mail():
+    '''
+    Valida la entrada de un correo electronico mediante una expresion regular 
+    que verifica la estructura estandar (usuario@dominio.com).
+    '''
     patron = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     mail = input("Ingrese su mail: ")
     while not re.match(patron, mail):
