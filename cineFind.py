@@ -40,11 +40,11 @@ def pedir_puntaje():
 
 def pedir_año():
     '''
-    Usuario ingresa el año de estreno de la pelicula. Con re.fullmatch valida que sean 4 digitos. Tambien se valida que sea entre 1888 y 2025 mediante expresiones regulares y comparaciones logicas.
+    Usuario ingresa el año de estreno de la pelicula. Con re.fullmatch valida que sean 4 digitos. Tambien se valida que sea entre 1888 y 2026 mediante expresiones regulares y comparaciones logicas.
 
     '''
     año_str = input("Año de estreno: ")
-    while not re.fullmatch(r"^\d{4}$", año_str) or int(año_str) < 1888 or int(año_str) > 2025:
+    while not re.fullmatch(r"^\d{4}$", año_str) or int(año_str) < 1888 or int(año_str) > 2026:
         print("Año inválido o fuera de rango. Ingrese 4 números (ej. 2001).")
         año_str = input("Año de estreno: ")
         
