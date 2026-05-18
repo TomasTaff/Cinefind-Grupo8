@@ -1,5 +1,3 @@
-# ---------------- FUNCIONES DE PEDIDO ----------------
- 
 import re
 from functools import reduce
 def pedir_nombre():
@@ -13,6 +11,8 @@ def pedir_nombre():
         nombre = input("Nombre de la película: ")
     return nombre
 
+ 
+
 def pedir_genero():
     '''
     Solicita el genero de la pelicula y valida que no sea un campo vacio
@@ -23,7 +23,7 @@ def pedir_genero():
         print("El género no puede estar vacío.")
         genero = input("Género: ")
     return genero
-
+                                                                                                                                             
 def pedir_puntaje():
     '''
     Le pide el puntaje al usuario (0-10). Usa re.fullmatch para validar que sean uno o dos digitos y tambien verifica que el valor este en el rango permitido.
@@ -150,21 +150,28 @@ def ordenar_por_puntaje(peliculas, generos, puntajes, años):
                 años[j], años[j+1] = años[j+1], años[j]
     print("Películas ordenadas por puntaje.\n")
 
-def buscar_pelicula(peliculas, generos, puntajes, años):
-    '''
-    Realiza una busqueda por nombre y, de encontrar coincidencia, 
-    imprime toda la ficha tecnica de la pelicula (Genero, Puntaje, Anio).
-    '''
-    nombre = input("Ingrese el nombre de la película: ")
+def diccionarioPelicula(peliculas,pelicula,genero,puntaje,año):
+    
     for i in range(len(peliculas)):
-        if re.fullmatch(nombre, peliculas[i], flags=re.IGNORECASE):
-            print("Película encontrada:")
-            print("Película:", peliculas[i])
-            print("Género:", generos[i])
-            print("Puntaje:", puntajes[i])
-            print("Año:", años[i])
+        if re.fullmatch(pelicula,peliculas[i],flags=re.IGNORECASE):
+            peliculaD={"pelicula":pelicula,"genero":genero[i],"puntaje":puntaje[i],"anio":año[i]}
+            print(peliculaD)
             return
-    print("No se encontró la película.\n")
+            
+        
+    print("pelicula no encontrada")
+        
+            
+    
+def buscar_pelicula(peliculas, generos, puntajes, años):
+    nombre = input("Ingrese el nombre de la película: ")
+    d=diccionarioPelicula(peliculas,nombre,generos,puntajes,años)
+    
+    return d
+
+    
+
+    
 
 def estadisticas(puntajes):
     '''
@@ -210,30 +217,19 @@ def imprimir_matriz(matriz):
             print(matriz[i][j], end=" | ")
         print()
  
-def mostrar_pelucula_en_matriz(filas, columnas,peliculas,generos,puntajes,años):
-    '''
-    Genera una matriz donde cada celda contiene una lista con toda la informacion 
-    agrupada de cada pelicula (Estructura compleja dentro de matriz).
-    '''
-    matriz = []
-    indice = 0
-    for i in range(filas):
-        fila = []
-        for j in range(columnas):
-            if indice < len(peliculas):
-                fila.append([peliculas[indice],generos[indice],puntajes[indice],años[indice]])
-                indice += 1
-            else:
-                fila.append("VACIO")
-        matriz.append(fila)
-    return matriz
+def mostrar_pelicula(peliculas,generos,puntajes,años):
+    
+    
+    for i in range (len(peliculas)):
+        pelicula={f"pelicula":peliculas[i],"genero":generos[i],"puntaje":puntajes[i],"anio":años[i]}
+        print(pelicula)
 
 def mostrar_destacadas(peliculas, puntajes):
     '''
     Filtra y muestra por consola los nombres de las peliculas cuya calificacion 
     es estrictamente superior a 8 puntos usando 'filter'.
     '''
-    print("\n=== PELÍCULAS DESTACADAS ===")
+    print("\n=== PELÍCULAS DESTACADAS ===")                           
  
     posiciones = list(range(len(puntajes)))
     
@@ -282,6 +278,9 @@ def pedir_mail():
     return mail
 
 
+
+ 
+    
 # ---------------- MAIN ----------------
 def main():
     peliculas = ["Matrix", "Titanic", "Inception", "Gladiador", "Interestelar"]
@@ -300,8 +299,8 @@ def main():
             agregar_pelicula(peliculas, generos, puntajes, años)
             matriz = matriz_peliculas(3, 5,peliculas)
         elif opcion == "2":
-            m=mostrar_pelucula_en_matriz(4, 4,peliculas,generos,puntajes,años)
-            imprimir_matriz(m)
+            mostrar_pelicula(peliculas,generos,puntajes,años)
+            
         elif opcion == "3":
             actualizar_pelicula(peliculas, generos, puntajes, años)
         elif opcion == "4":
@@ -319,17 +318,22 @@ def main():
             estadisticas(puntajes)
         elif opcion == "8":
             mostrar_destacadas(peliculas, puntajes)
-
+            
+            
+                 
         elif opcion == "0":
-            print("Fin del programa.")
+            
             band=False
             
             print("Desea ingresar su mail para que le mandemos notificaciones?")
-            opcion_mail=input("1=Si   2=No: ")
+            opcion_mail=input("1:Si   2:No ")
             if opcion_mail=="1":
                 pedir_mail()
                 print("Mail valido se le mandaran las notificaciones ")
             else:
                 print ("Gracias por usar CineFind")
+                
+            print("Fin del programa.")
 
 main()
+
