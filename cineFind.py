@@ -24,7 +24,7 @@ def pedir_genero():
         genero = input("Género: ")
     return genero
 
-                                                                                                                              
+
 def pedir_puntaje():
     '''
     Le pide el puntaje al usuario (0-10). 
@@ -120,18 +120,13 @@ def actualizar_pelicula(peliculas, generos, puntajes, años):
         print("Opción inválida.\n")
 
 def promedio_puntajes(puntajes):
-    '''
-    Calcula el promedio aritmetico de todos los puntajes registrados 
-    utilizando la funcion de orden superior 'reduce'.
-    '''
-    if len(puntajes) == 0:
-        print("No hay películas cargadas.\n")
-        return
- 
-    total = reduce(lambda a, b: a + b, puntajes, 0)
- 
-    promedio = total / len(puntajes)
-    print("Puntaje promedio general:", round(promedio, 2), "\n")
+    try:
+        total = reduce(lambda a, b: a + b, puntajes, 0)
+        promedio = total / len(puntajes) #si no hay películas, len es 0
+        print("Puntaje promedio general:", round(promedio, 2), "\n")
+        
+    except ZeroDivisionError:
+        print("No hay películas cargadas para calcular el promedio.\n")
 
 def copiar_lista(lista):
     """
@@ -180,18 +175,21 @@ def buscar_pelicula(peliculas, generos, puntajes, años):
 
 def estadisticas(puntajes):
     '''
-    Muestra un resumen estadistico rapido: puntaje mas alto, 
-    mas bajo y el promedio general.
+    Muestra un resumen estadistico rapido.
+    Usa Excepciones para atajar listas vacías en lugar de contar los elementos con un IF.
     '''
-    if len(puntajes) == 0:
-        print("No hay películas cargadas.\n")
-        return
-    maximo = max(puntajes)
-    minimo = min(puntajes)
-    promedio = sum(puntajes) / len(puntajes)
-    print("Puntaje máximo:", maximo)
-    print("Puntaje mínimo:", minimo)
-    print("Promedio:", round(promedio, 2), "\n")
+    try:
+        maximo = max(puntajes) # Riesgo de ValueError
+        minimo = min(puntajes)
+        promedio = sum(puntajes) / len(puntajes) # Riesgo de ZeroDivisionError
+        
+        print("Puntaje máximo:", maximo)
+        print("Puntaje mínimo:", minimo)
+        print("Promedio:", round(promedio, 2), "\n")
+        
+    except (ZeroDivisionError, ValueError):
+        # Atrapamos los dos errores posibles en una sola linea
+        print("No hay películas cargadas para calcular estadísticas.\n")
 
 # ---------------- MATRIZ ----------------
 def matriz_peliculas(filas, columnas,peliculas):
