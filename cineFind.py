@@ -23,20 +23,25 @@ def pedir_genero():
         print("El género no puede estar vacío.")
         genero = input("Género: ")
     return genero
-                                                                                                                                             
+
+                                                                                                                              
 def pedir_puntaje():
     '''
-    Le pide el puntaje al usuario (0-10). Usa re.fullmatch para validar que sean uno o dos digitos y tambien verifica que el valor este en el rango permitido.
-
+    Le pide el puntaje al usuario (0-10). 
+    Usa excepciones (ValueError) para validar que sea un número válido.
     '''
-    puntaje_str = input("Puntaje (0 a 10): ")
-    
-    while not re.fullmatch(r"^\d{1,2}$", puntaje_str) or float(puntaje_str) < 0 or float(puntaje_str) > 10:
-        print("Puntaje inválido.")
+    while True:
         puntaje_str = input("Puntaje (0 a 10): ")
-        
-    puntaje = float(puntaje_str)
-    return puntaje
+        try:
+            puntaje = float(puntaje_str)
+            
+            if puntaje < 0 or puntaje > 10:
+                print("Puntaje inválido. Debe estar entre 0 y 10.")
+            else:
+                return puntaje
+                
+        except ValueError:
+            print("Error: Por favor ingresa un número válido (ej. 8 o 8.5).")
 
 def pedir_año():
     '''
