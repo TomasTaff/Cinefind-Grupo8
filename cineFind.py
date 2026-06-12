@@ -1,9 +1,49 @@
 import re
+import json
+import os
 from functools import reduce
+
+# Nombre del archivo donde se guardará nuestra base de datos
+ARCHIVO_BD = "cinefind_db.json"
+
+# ================ NUEVAS FUNCIONES PARA JSON ================
+
+def cargar_datos():
+    '''
+    Verifica si existe el archivo JSON. Si existe, lo lee y devuelve las listas.
+    Si no existe, devuelve tus listas predeterminadas para empezar.
+    '''
+    if os.path.exists(ARCHIVO_BD):
+        with open(ARCHIVO_BD, "r", encoding="utf-8") as archivo:
+            datos = json.load(archivo)
+            # Retornamos las 4 listas guardadas
+            return datos["peliculas"], datos["generos"], datos["puntajes"], datos["años"]
+    else:
+        # Si es la primera vez que se ejecuta el programa y no hay JSON
+        peliculas = ["Matrix", "Titanic", "Inception", "Gladiador", "Interestelar"]
+        generos = ["Ciencia ficción", "Romance", "Ciencia ficción", "Acción", "Ciencia ficción"]
+        puntajes = [9.0, 8.0, 9.5, 8.5, 9.8]
+        años = [1999, 1997, 2010, 2000, 2014]
+        return peliculas, generos, puntajes, años
+
+def guardar_datos(peliculas, generos, puntajes, años):
+    '''
+    Empaqueta las 4 listas paralelas en un diccionario y lo guarda en el JSON.
+    '''
+    datos = {
+        "peliculas": peliculas,
+        "generos": generos,
+        "puntajes": puntajes,
+        "años": años
+    }
+    with open(ARCHIVO_BD, "w", encoding="utf-8") as archivo:
+        json.dump(datos, archivo, indent=4)
+
+# ================ FUNCIONES DE VALIDACIÓN ================
+
 def pedir_nombre():
     ''' 
     Solicita el nombre de la pelicula y valida que no sea un campo vacio
-
     '''
     nombre = input("Nombre de la película: ")
     while nombre == "":
@@ -11,19 +51,15 @@ def pedir_nombre():
         nombre = input("Nombre de la película: ")
     return nombre
 
- 
-
 def pedir_genero():
     '''
     Solicita el genero de la pelicula y valida que no sea un campo vacio
-
     '''
     genero = input("Género: ")
     while genero == "":
         print("El género no puede estar vacío.")
         genero = input("Género: ")
     return genero
-
 
 def pedir_puntaje():
     '''
@@ -34,19 +70,17 @@ def pedir_puntaje():
         puntaje_str = input("Puntaje (0 a 10): ")
         try:
             puntaje = float(puntaje_str)
-            
             if puntaje < 0 or puntaje > 10:
                 print("Puntaje inválido. Debe estar entre 0 y 10.")
             else:
                 return puntaje
-                
         except ValueError:
             print("Error: Por favor ingresa un número válido (ej. 8 o 8.5).")
 
 def pedir_año():
     '''
-    Usuario ingresa el año de estreno de la pelicula. Con re.fullmatch valida que sean 4 digitos. Tambien se valida que sea entre 1888 y 2026 mediante expresiones regulares y comparaciones logicas.
-
+    Usuario ingresa el año de estreno de la pelicula. Con re.fullmatch valida que sean 4 digitos. 
+    Tambien se valida que sea entre 1888 y 2026 mediante expresiones regulares y comparaciones logicas.
     '''
     año_str = input("Año de estreno: ")
     while not re.fullmatch(r"^\d{4}$", año_str) or int(año_str) < 1888 or int(año_str) > 2026:
@@ -57,11 +91,11 @@ def pedir_año():
     return año
 
 # ---------------- FUNCIONES PRINCIPALES ----------------
+
 def existe_pelicula(nombre, peliculas):
     '''
     Recorre la lista de titulos para verificar si el nombre ingresado ya existe. Usa re.fullmatch() para la verificacion.
     Usa re.IGNORECASE para evitar duplicados por diferencias de mayusculas. 
-
     '''
     i = 0
     while i < len(peliculas):
@@ -88,11 +122,9 @@ def agregar_pelicula(peliculas, generos, puntajes, años):
     años.append(año)
     print("Película agregada.\n")
 
-
 def actualizar_pelicula(peliculas, generos, puntajes, años):
     '''
     Busca una pelicula por nombre y permite al usuario modificar especificamente su genero o puntaje. 
-
     '''
     if len(peliculas) == 0:
         print("No hay películas para actualizar.\n")
@@ -134,6 +166,7 @@ def copiar_lista(lista):
     """
     copia_lista=lista.copy()
     return copia_lista
+
 def ordenar_por_puntaje(peliculas, generos, puntajes, años):
     '''
     Aplica el algoritmo de Bubble Sort para ordenar las listas de forma descendente 
@@ -151,27 +184,18 @@ def ordenar_por_puntaje(peliculas, generos, puntajes, años):
     print("Películas ordenadas por puntaje.\n")
 
 def diccionarioPelicula(peliculas,pelicula,genero,puntaje,año):
-    
     for i in range(len(peliculas)):
         if re.fullmatch(pelicula,peliculas[i],flags=re.IGNORECASE):
             peliculaD={"pelicula":pelicula,"genero":genero[i],"puntaje":puntaje[i],"anio":año[i]}
             print(peliculaD)
             return
             
-        
     print("pelicula no encontrada")
-        
             
-    
 def buscar_pelicula(peliculas, generos, puntajes, años):
     nombre = input("Ingrese el nombre de la película: ")
     d=diccionarioPelicula(peliculas,nombre,generos,puntajes,años)
-    
     return d
-
-    
-
-    
 
 def estadisticas(puntajes):
     '''
@@ -192,12 +216,12 @@ def estadisticas(puntajes):
         print("No hay películas cargadas para calcular estadísticas.\n")
 
 # ---------------- MATRIZ ----------------
+
 def matriz_peliculas(filas, columnas,peliculas):
     '''
     Organiza la lista de nombres de peliculas en una estructura bidimensional 
     (matriz) de dimensiones dadas, rellenando con 'VACIO' si sobran espacios.
     '''
-
     matriz = []
     indice = 0
     for i in range(filas):
@@ -221,8 +245,6 @@ def imprimir_matriz(matriz):
         print()
  
 def mostrar_pelicula(peliculas,generos,puntajes,años):
-    
-    
     for i in range (len(peliculas)):
         pelicula={f"pelicula":peliculas[i],"genero":generos[i],"puntaje":puntajes[i],"anio":años[i]}
         print(pelicula)
@@ -235,7 +257,6 @@ def mostrar_destacadas(peliculas, puntajes):
     print("\n=== PELÍCULAS DESTACADAS ===")                           
  
     posiciones = list(range(len(puntajes)))
-    
     pos_destacadas = list(filter(lambda i: puntajes[i] > 8, posiciones))
 
     if len(pos_destacadas) == 0:
@@ -244,11 +265,12 @@ def mostrar_destacadas(peliculas, puntajes):
         for i in pos_destacadas:
             print(f"- {peliculas[i]}: {puntajes[i]} estrellas")
     print()
+
 # ---------------- MENU ----------------
+
 def menu():
     '''
     Muestra la intefaz de opciones al usuario y valida que la entrada sea una opcion valida. 
-
     '''
     print("=== MENÚ CINEFIND ===")
     print("1. Agregar película")
@@ -265,8 +287,6 @@ def menu():
         print("Opción inválida.")
         opcion = input("Opción: ")
     return opcion
-
-    
     
 def pedir_mail():
     '''
@@ -280,34 +300,39 @@ def pedir_mail():
         mail = input("Ingrese su mail: ")
     return mail
 
-
-
- 
-    
 # ---------------- MAIN ----------------
+
 def main():
-    peliculas = ["Matrix", "Titanic", "Inception", "Gladiador", "Interestelar"]
-    generos = ["Ciencia ficción", "Romance", "Ciencia ficción", "Acción", "Ciencia ficción"]
-    puntajes = [9, 8, 9.5, 8.5, 9.8]
-    años = [1999, 1997, 2010, 2000, 2014]
+    # 1. Cargamos los datos desde el JSON (o las listas por defecto si no existe)
+    peliculas, generos, puntajes, años = cargar_datos()
+    
     matriz = matriz_peliculas(3, 5,peliculas)
     print("=== CINEFIND ===\n")
     opcion = ""
     band=True
+    
     while band :
         opcion = menu()
+        
         if opcion == "1":
             print("estas son las peliculas que ya estan cargadas ")
             imprimir_matriz(matriz)
             agregar_pelicula(peliculas, generos, puntajes, años)
             matriz = matriz_peliculas(3, 5,peliculas)
+            # Guardamos los datos después de agregar
+            guardar_datos(peliculas, generos, puntajes, años)
+            
         elif opcion == "2":
             mostrar_pelicula(peliculas,generos,puntajes,años)
             
         elif opcion == "3":
             actualizar_pelicula(peliculas, generos, puntajes, años)
+            # Guardamos los datos después de actualizar
+            guardar_datos(peliculas, generos, puntajes, años)
+            
         elif opcion == "4":
             promedio_puntajes(puntajes)
+            
         elif opcion == "5":
             copia_peliculas=copiar_lista(peliculas)
             copia_generos=copiar_lista(generos)
@@ -317,17 +342,15 @@ def main():
             
         elif opcion == "6":
             buscar_pelicula(peliculas, generos, puntajes, años)
+            
         elif opcion == "7":
             estadisticas(puntajes)
+            
         elif opcion == "8":
             mostrar_destacadas(peliculas, puntajes)
-            
-            
                  
         elif opcion == "0":
-            
             band=False
-            
             print("Desea ingresar su mail para que le mandemos notificaciones?")
             opcion_mail=input("1:Si   2:No ")
             if opcion_mail=="1":
@@ -338,5 +361,5 @@ def main():
                 
             print("Fin del programa.")
 
-main()
-
+if __name__ == "__main__":
+    main()
