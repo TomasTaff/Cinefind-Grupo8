@@ -2,16 +2,16 @@ import re
 import json
 import os
 from functools import reduce
+import doctest
 
-# Nombre del archivo donde se guardará nuestra base de datos
 ARCHIVO_BD = "cinefind_db.json"
 
-# ================ NUEVAS FUNCIONES PARA JSON ================
+# ================ FUNCIONES PARA JSON ================
 
 def cargar_datos():
     '''
     Verifica si existe el archivo JSON. Si existe, lo lee y devuelve las listas.
-    Si no existe, devuelve tus listas predeterminadas para empezar.
+    Si no existe, devuelve las listas predeterminadas para empezar.
     '''
     if os.path.exists(ARCHIVO_BD):
         with open(ARCHIVO_BD, "r", encoding="utf-8") as archivo:
@@ -94,8 +94,22 @@ def pedir_año():
 
 def existe_pelicula(nombre, peliculas):
     '''
-    Recorre la lista de titulos para verificar si el nombre ingresado ya existe. Usa re.fullmatch() para la verificacion.
-    Usa re.IGNORECASE para evitar duplicados por diferencias de mayusculas. 
+    Verifica si el nombre ingresado ya existe en el catálogo.
+    Usa re.IGNORECASE para evitar duplicados por diferencias de mayúsculas. 
+    
+    --- PRUEBAS UNITARIAS (doctest) ---
+    
+    Escenario 1: La película existe exactamente igual
+    >>> existe_pelicula("Matrix", ["Matrix", "Titanic", "Inception"])
+    True
+    
+    Escenario 2: La película no existe en la lista
+    >>> existe_pelicula("Avatar", ["Matrix", "Titanic", "Inception"])
+    False
+    
+    Escenario 3: La película existe pero escrita en minúsculas (Prueba de re.IGNORECASE)
+    >>> existe_pelicula("titanic", ["Matrix", "Titanic", "Inception"])
+    True
     '''
     i = 0
     while i < len(peliculas):
@@ -303,7 +317,6 @@ def pedir_mail():
 # ---------------- MAIN ----------------
 
 def main():
-    # 1. Cargamos los datos desde el JSON (o las listas por defecto si no existe)
     peliculas, generos, puntajes, años = cargar_datos()
     
     matriz = matriz_peliculas(3, 5,peliculas)
@@ -319,7 +332,6 @@ def main():
             imprimir_matriz(matriz)
             agregar_pelicula(peliculas, generos, puntajes, años)
             matriz = matriz_peliculas(3, 5,peliculas)
-            # Guardamos los datos después de agregar
             guardar_datos(peliculas, generos, puntajes, años)
             
         elif opcion == "2":
@@ -327,7 +339,6 @@ def main():
             
         elif opcion == "3":
             actualizar_pelicula(peliculas, generos, puntajes, años)
-            # Guardamos los datos después de actualizar
             guardar_datos(peliculas, generos, puntajes, años)
             
         elif opcion == "4":
@@ -362,4 +373,6 @@ def main():
             print("Fin del programa.")
 
 if __name__ == "__main__":
+    doctest.testmod()
+    
     main()
