@@ -15,9 +15,10 @@ def cargar_datos():
     '''
     if os.path.exists(ARCHIVO_BD):
         with open(ARCHIVO_BD, "r", encoding="utf-8") as archivo:
-            datos = json.load(archivo)
-            # Retornamos las 4 listas guardadas
+            datos = json.load(archivo) # lee el archivo y lo pasa a un diccionario que se llama datos
+    
             return datos["peliculas"], datos["generos"], datos["puntajes"], datos["años"]
+        #devuelve las 4 listas por separado
     else:
         # Si es la primera vez que se ejecuta el programa y no hay JSON
         peliculas = ["Matrix", "Titanic", "Inception", "Gladiador", "Interestelar"]
@@ -30,6 +31,7 @@ def guardar_datos(peliculas, generos, puntajes, años):
     '''
     Empaqueta las 4 listas paralelas en un diccionario y lo guarda en el JSON.
     '''
+    # se usa cada vez que se modifica la informacion del catalogo/
     datos = {
         "peliculas": peliculas,
         "generos": generos,
@@ -37,7 +39,7 @@ def guardar_datos(peliculas, generos, puntajes, años):
         "años": años
     }
     with open(ARCHIVO_BD, "w", encoding="utf-8") as archivo:
-        json.dump(datos, archivo, indent=4)
+        json.dump(datos, archivo, indent=4) # esribe el diccionario en el json
 
 # ================ FUNCIONES DE VALIDACIÓN ================
 
@@ -198,11 +200,12 @@ def ordenar_por_puntaje(peliculas, generos, puntajes, años):
     print("Películas ordenadas por puntaje.\n")
 
 def diccionarioPelicula(peliculas,pelicula,genero,puntaje,año):
+    #junta y empaqueta todo
     for i in range(len(peliculas)):
         if re.fullmatch(pelicula,peliculas[i],flags=re.IGNORECASE):
-            peliculaD={"pelicula":pelicula,"genero":genero[i],"puntaje":puntaje[i],"anio":año[i]}
+            peliculaD={"pelicula":pelicula,"genero":genero[i],"puntaje":puntaje[i],"anio":año[i]} #arma el diccionario
             print(peliculaD)
-            return
+            return peliculaD
             
     print("pelicula no encontrada")
             
@@ -359,7 +362,6 @@ def main():
             
         elif opcion == "8":
             mostrar_destacadas(peliculas, puntajes)
-                 
         elif opcion == "0":
             band=False
             print("Desea ingresar su mail para que le mandemos notificaciones?")
@@ -371,6 +373,7 @@ def main():
                 print ("Gracias por usar CineFind")
                 
             print("Fin del programa.")
+
 
 if __name__ == "__main__":
     doctest.testmod()
